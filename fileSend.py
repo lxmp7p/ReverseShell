@@ -5,7 +5,7 @@ import os
 def start_client():
 	while True:	
 		sock = socket.socket()
-		sock.connect(('localhost', 1010))
+		sock.connect(('192.168.0.104', 1010))
 		message = input("Input: ")
 		if (message == 'exit'):
 			sock.close()
@@ -14,22 +14,28 @@ def start_client():
 			sock.send(message.encode())
 			sock.close()
 			break
-		sock.send(message.encode())
+		file = open('1.jpg', 'rb')
+		for i in file:
+			sock.send(i)
 		data = sock.recv(1024)
-		print(data)
+		file.close()
+		#print(data)
 
 
 
 #SERVER
 def start_server():
 	sock = socket.socket()
-	sock.bind(('', 1010))
+	sock.bind(('0.0.0.0', 1010))
 	sock.listen(1)
 	while True:
 		conn, addr = sock.accept()
 		while True:
 			data = conn.recv(1024)
-			message = data.decode()
+			message = data
+			file = open('a.jpg', 'wb')
+			file.write(message)
+			file.close()
 			if (message == 'exit'):
 				conn.close()
 				break
@@ -37,7 +43,7 @@ def start_server():
 				sys.exit()
 			if not data:
 				break
-			conn.send(data.upper())
+			#conn.send(data.upper())
 
 
 mode = input("Запустить как:\n1)Клиент\n2)Сервер:\nВаш выбор: ")
