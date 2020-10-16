@@ -4,7 +4,7 @@ import subprocess
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def start_server():
-    s.bind(('0.0.0.0', 8888))
+    s.bind(('192.168.0.105', 8888))
     s.listen(5)
     client, addr = s.accept()
     while True:
